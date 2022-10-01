@@ -1,12 +1,17 @@
 import { getContentTweets, getUserTweets } from "./apiFunctions.js";
 import express from "express";
-import cors from "cors";
-const app = express(cors());
+
+const app = express();
 const port = 8000;
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+});
+
 app.get("/", async (req, res) => {
-  const userTweets = await getUserTweets("theprimeagen");
-  res.send(userTweets.data);
+  const userSearchTweets = await getUserTweets("VancityReynolds");
+  res.json(userSearchTweets);
 });
 
 app.listen(port, () => {
