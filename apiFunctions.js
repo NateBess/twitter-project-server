@@ -1,7 +1,7 @@
 import axios from "axios";
+import { getDate } from "date-fns";
 import { AUTH } from "./config.js";
 
-const TEST = `https://api.twitter.com/2/users/by/username/`;
 const userSearchURL = `https://api.twitter.com/2/users/by/username/`;
 const tweetsURL = `https://api.twitter.com/2/users/`;
 const contentURL = `https://api.twitter.com/2/tweets/search/recent?query=`;
@@ -58,6 +58,17 @@ const returnAllTweets = async (userData, tweetData) => {
       preview_image = "NONE";
     }
 
+    //HERE
+    const time = new Date(tweet.created_at).toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+      month: "numeric",
+      day: "numeric",
+      year: "numeric",
+    });
+    const dateTimeStamp = time.replace(",", " -");
+
     const newTweet = {
       userId: userData.id,
       tweetId: tweet.id,
@@ -65,7 +76,7 @@ const returnAllTweets = async (userData, tweetData) => {
       username: userData.username,
       tweetText: tweet.text,
       metrics: tweet.public_metrics,
-      timeStamp: tweet.created_at,
+      timeStamp: dateTimeStamp,
       video_options: video_variants,
       preview_image_link: preview_image,
       profilePic: userData.profile_image_url,
