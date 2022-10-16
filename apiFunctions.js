@@ -40,22 +40,30 @@ const returnTweetDataFromUserId = async (userId) => {
 const returnAllTweets = async (userData, tweetData) => {
   const tweetArray = [];
   const tweetMediaArray = tweetData.includes.media;
+  console.log(tweetMediaArray);
 
   let video_variants;
   let preview_image;
+  let picture_url;
 
   tweetData.data.map((tweet) => {
     try {
       const tweetMediaKey = tweet.attachments.media_keys[0];
       for (let i = 0; i < tweetMediaArray.length; i++) {
         if (tweetMediaKey === tweetMediaArray[i].media_key) {
-          video_variants = tweetMediaArray[i].variants;
-          preview_image = tweetMediaArray[i].preview_image_url;
+          if (tweetMediaArray[i].type === "video") {
+            video_variants = tweetMediaArray[i].variants;
+            preview_image = tweetMediaArray[i].preview_image_url;
+          }
+          if (tweetMediaArray[i].type === "photo") {
+            picture_url = tweetMediaArray[i].url;
+          }
         }
       }
     } catch {
       video_variants = "NONE";
       preview_image = "NONE";
+      picture_url = "NONE";
     }
 
     //HERE
@@ -78,6 +86,7 @@ const returnAllTweets = async (userData, tweetData) => {
       metrics: tweet.public_metrics,
       timeStamp: dateTimeStamp,
       video_options: video_variants,
+      picture_url: picture_url,
       preview_image_link: preview_image,
       profilePic: userData.profile_image_url,
     };

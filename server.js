@@ -14,8 +14,13 @@ app.use(
 app.use(bodyParser.json());
 
 app.post("/", async (req, res) => {
-  const userSearchTweets = await getUserTweets(req.body.searchValue);
-  res.json(userSearchTweets);
+  try {
+    const userSearchTweets = await getUserTweets(req.body.searchValue);
+    res.json(userSearchTweets);
+  } catch {
+    console.log("Error, user probably doesn't exist!");
+    res.json("NONE");
+  }
 });
 
 app.listen(port, () => {
