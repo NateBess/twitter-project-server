@@ -37,10 +37,22 @@ const returnTweetDataFromUserId = async (userId) => {
   }
 };
 
+const getTweetTime = (tweetTime) => {
+  const time = new Date(tweetTime).toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+    month: "numeric",
+    day: "numeric",
+    year: "numeric",
+  });
+  const dateTimeStamp = time.replace(",", " -");
+  return dateTimeStamp;
+};
+
 const returnAllTweets = async (userData, tweetData) => {
   const tweetArray = [];
   const tweetMediaArray = tweetData.includes.media;
-  console.log(tweetMediaArray);
 
   let video_variants;
   let preview_image;
@@ -66,17 +78,6 @@ const returnAllTweets = async (userData, tweetData) => {
       picture_url = "NONE";
     }
 
-    //HERE
-    const time = new Date(tweet.created_at).toLocaleTimeString("en-US", {
-      hour: "numeric",
-      minute: "numeric",
-      hour12: true,
-      month: "numeric",
-      day: "numeric",
-      year: "numeric",
-    });
-    const dateTimeStamp = time.replace(",", " -");
-
     const newTweet = {
       userId: userData.id,
       tweetId: tweet.id,
@@ -84,7 +85,7 @@ const returnAllTweets = async (userData, tweetData) => {
       username: userData.username,
       tweetText: tweet.text,
       metrics: tweet.public_metrics,
-      timeStamp: dateTimeStamp,
+      timeStamp: getTweetTime(tweet.created_at),
       video_options: video_variants,
       picture_url: picture_url,
       preview_image_link: preview_image,
