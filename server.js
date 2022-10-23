@@ -1,4 +1,9 @@
-import { getContentTweets, getUserTweets } from "./apiFunctions.js";
+import {
+  getTweetsFromContent,
+  getTweetsFromUsername,
+  returnFormattedTweets,
+} from "./apiFunctions.js";
+
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
@@ -14,12 +19,28 @@ app.use(
 app.use(bodyParser.json());
 
 app.post("/", async (req, res) => {
+  res.send({ status: "Working!" });
+});
+
+app.post("/search-user", async (req, res) => {
   try {
-    const userSearchTweets = await getUserTweets(req.body.searchValue);
-    res.json(userSearchTweets);
+    const param = req.body.searchValue;
+    const apiData = returnFormattedTweets(await getTweetsFromUsername(param));
+    res.json(apiData);
   } catch {
-    console.log("Error, user probably doesn't exist!");
-    res.json("NONE");
+    console.log("'/search-user' Endpoint Failure!");
+    res.json("'/search-user' Endpoint Failure!");
+  }
+});
+
+app.post("/search-content", async (req, res) => {
+  try {
+    const param = req.body.searchValue;
+    const apiData = returnFormattedTweets(await getTweetsFromContent(param));
+    res.json(apiData);
+  } catch {
+    console.log("'/search-content' Endpoint Failure!");
+    res.json("'/search-content' Endpoint Failure!");
   }
 });
 
