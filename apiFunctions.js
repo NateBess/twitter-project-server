@@ -5,8 +5,6 @@ const userSearchURL = `https://api.twitter.com/2/users/by/username/`;
 const tweetsURL = `https://api.twitter.com/2/users/`;
 const contentURL = `https://api.twitter.com/2/tweets/search/recent?query=`;
 
-const nextTokenExampleURL = `${contentURL}snow&next_token=b26v89c19zqg8o3fobd8v73egzbdt3qao235oql`;
-
 const returnUrlSearch = (username) =>
   `${userSearchURL}${username}?user.fields=id,profile_image_url,url,username`;
 const returnUrlTweets = (userId) =>
@@ -153,7 +151,6 @@ const returnMediaDataObject = (tweet, tweetMedia) => {
           return {
             type: mediaItem.type,
             media_key: mediaItem.media_key,
-            //image_url: mediaItem.url,
             variants: mediaItem.variants,
           };
       }
